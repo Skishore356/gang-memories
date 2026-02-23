@@ -66,24 +66,60 @@ function display(data) {
       ? `<video controls src="${m.file}"></video>`
       : `<img src="${m.file}">`;
 
+    const commentsHTML = (m.comments || []).map(c =>
+      `<p><b>${c.name}:</b> ${c.text}</p>`
+    ).join("");
+
     card.innerHTML = `
       ${media}
       <p><b>${m.author}</b></p>
       <p>${m.event}</p>
       <p>${m.description}</p>
+
+      <button onclick="likeMemory(${m.id})">❤️ ${m.likes || 0}</button>
+
+      <div class="comments">
+        ${commentsHTML}
+        <input placeholder="Your name" id="name-${m.id}">
+        <input placeholder="Comment..." id="comment-${m.id}">
+        <button onclick="addComment(${m.id})">Post</button>
+      </div>
     `;
 
     gallery.appendChild(card);
   });
 }
 
+async function likeMemory(id){
+  await fetch(`/like/${id}`, { method:"POST" });
+  loadMemories();
+}
+
+async function addComment(id){
+  const name = document.getElementById(`name-${id}`).value;
+  const text = document.getElementById(`comment-${id}`).value;
+
+  await fetch(`/comment/${id}`, {
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify({ name, text })
+  });
+
+  loadMemories();
+}
+
 function searchMemories(query) {
+  if (!query) {
+    display(memories);
+    return;
+  }
+
   const q = query.toLowerCase();
 
   const filtered = memories.filter(m =>
-    m.author.toLowerCase().includes(q) ||
-    m.event.toLowerCase().includes(q) ||
-    m.description.toLowerCase().includes(q)
+    (m.author && m.author.toLowerCase().includes(q)) ||
+    (m.event && m.event.toLowerCase().includes(q)) ||
+    (m.description && m.description.toLowerCase().includes(q))
   );
 
   display(filtered);
