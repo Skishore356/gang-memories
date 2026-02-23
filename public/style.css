@@ -90,3 +90,27 @@ body{
   font-size:12px;
 }
 
+.gallery{
+  column-count:3;
+  column-gap:20px;
+  padding:30px;
+}
+
+.card{
+  display:inline-block;
+  width:100%;
+  margin-bottom:20px;
+  background:#1e293b;
+  border-radius:16px;
+  overflow:hidden;
+  transition:0.3s;
+}
+
+.card:hover{
+  transform:scale(1.02);
+}
+
+.desc{
+  padding:10px;
+  color:#cbd5e1;
+}

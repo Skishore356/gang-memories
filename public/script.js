@@ -46,14 +46,13 @@ function loadMembers(){
 
   members.forEach(m=>{
     grid.innerHTML += `
-      <div class="member" onclick="searchMemories('${m.name}')">
+      <div class="member" onclick="filterByPerson('${m.name}')">
         <img src="${m.img}" onerror="this.src='members/default.jpg'">
         <h4>${m.name}</h4>
         <p>${m.nick}</p>
       </div>`;
   });
 }
-
 
 // ---------------- LOAD MEMORIES ----------------
 async function loadMemories(){
@@ -153,9 +152,31 @@ function searchMemories(query){
     (m.description && m.description.toLowerCase().includes(q))
   );
 
+  const gallery = document.getElementById("gallery");
+
+  if(results.length === 0){
+    gallery.innerHTML =
+      `<h2 style="text-align:center;">No matching memories 😔</h2>`;
+    return;
+  }
+
   display(results);
 }
 
+function filterByPerson(name){
+  const results = memories.filter(m =>
+    m.author && m.author.toLowerCase().includes(name.toLowerCase())
+  );
+
+  if(results.length === 0){
+    document.getElementById("gallery").innerHTML =
+      `<h2 style="text-align:center;">No memories of ${name} yet 📭</h2>`;
+    return;
+  }
+
+  display(results);
+  window.scrollTo({ top: 500, behavior:"smooth" });
+}
 
 // ---------------- UPLOAD ----------------
 async function upload() {
