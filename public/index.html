@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gang Memories</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div id="loginBox">
+  <h2>🔐 Enter Gang Password</h2>
+  <input type="password" id="password" placeholder="Enter Password">
+  <button onclick="login()">Enter</button>
+</div>
+
+<div id="main" style="display:none;">
+
+<header>
+  <h1>Gang of 12 ❤️ Memories</h1>
+
+  <input type="text" placeholder="Search by name, event, keyword..."
+         oninput="searchMemories(this.value)">
+</header>
+
+<section class="uploadBox">
+  <h3>Upload New Memory</h3>
+
+  <input type="file" id="file"><br>
+  <input type="text" id="author" placeholder="Author Name"><br>
+  <input type="text" id="event" placeholder="Event Name"><br>
+  <input type="text" id="description" placeholder="Description"><br>
+
+  <button onclick="upload()">Upload</button>
+</section>
+
+<section id="gallery" class="gallery"></section>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

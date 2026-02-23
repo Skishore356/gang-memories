@@ -1,0 +1,48 @@
+body {
+  font-family: Arial;
+  background: #121212;
+  color: white;
+  text-align: center;
+}
+
+header {
+  background: #1f1f1f;
+  padding: 15px;
+}
+
+input {
+  padding: 8px;
+  margin: 5px;
+  width: 250px;
+}
+
+button {
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.uploadBox {
+  margin: 20px;
+  padding: 15px;
+  background: #1e1e1e;
+  border-radius: 10px;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.card {
+  background: #1e1e1e;
+  padding: 10px;
+  width: 250px;
+  border-radius: 10px;
+}
+
+.card img, .card video {
+  width: 100%;
+  border-radius: 8px;
+}
