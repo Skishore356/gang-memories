@@ -45,48 +45,55 @@ function loadMembers(){
   });
 }
 
-async function loadMemories() {
-  const res = await fetch("/memories");
-  memories = await res.json();
+function loadMembers(){
+  const grid=document.getElementById("memberGrid");
+  grid.innerHTML="";
 
-  display(memories);
-  loadMembers();
-  buildEventMenu();
+  members.forEach(m=>{
+    grid.innerHTML += `
+      <div class="member" onclick="searchMemories('${m.name}')">
+        <img src="${m.img}" onerror="this.src='members/default.jpg'">
+        <h4>${m.name}</h4>
+        <p>${m.nick}</p>
+      </div>`;
+  });
 }
+function display(data){
+  const gallery=document.getElementById("gallery");
+  gallery.innerHTML="";
 
-function display(data) {
-  const gallery = document.getElementById("gallery");
-  gallery.innerHTML = "";
-
-  data.slice().reverse().forEach(m => {
-    const card = document.createElement("div");
-    card.className = "card";
-
+  data.slice().reverse().forEach(m=>{
     const media = m.file.endsWith(".mp4")
       ? `<video controls src="${m.file}"></video>`
       : `<img src="${m.file}">`;
 
-    const commentsHTML = (m.comments || []).map(c =>
-      `<p><b>${c.name}:</b> ${c.text}</p>`
+    const comments=(m.comments||[]).map(c =>
+      `<p><b>${c.name}</b>: ${c.text}</p>`
     ).join("");
 
-    card.innerHTML = `
-      ${media}
-      <p><b>${m.author}</b></p>
-      <p>${m.event}</p>
-      <p>${m.description}</p>
+    gallery.innerHTML+=`
+      <div class="card">
+        ${media}
 
-      <button onclick="likeMemory(${m.id})">❤️ ${m.likes || 0}</button>
+        <div class="meta">
+          <span class="eventTag">${m.event}</span>
+          <p class="author">By ${m.author}</p>
+        </div>
 
-      <div class="comments">
-        ${commentsHTML}
-        <input placeholder="Your name" id="name-${m.id}">
-        <input placeholder="Comment..." id="comment-${m.id}">
-        <button onclick="addComment(${m.id})">Post</button>
+        <p class="desc">${m.description}</p>
+
+        <button onclick="likeMemory(${m.id})">
+          ❤️ ${m.likes||0}
+        </button>
+
+        <div class="comments">
+          ${comments}
+          <input placeholder="Name" id="name-${m.id}">
+          <input placeholder="Add a memory..." id="comment-${m.id}">
+          <button onclick="addComment(${m.id})">Post</button>
+        </div>
       </div>
     `;
-
-    gallery.appendChild(card);
   });
 }
 
@@ -108,21 +115,31 @@ async function addComment(id){
   loadMemories();
 }
 
-function searchMemories(query) {
-  if (!query) {
+function searchMemories(query){
+  const gallery=document.getElementById("gallery");
+
+  if(!query){
     display(memories);
     return;
   }
 
-  const q = query.toLowerCase();
+  const q=query.toLowerCase();
 
-  const filtered = memories.filter(m =>
+  const results=memories.filter(m =>
     (m.author && m.author.toLowerCase().includes(q)) ||
     (m.event && m.event.toLowerCase().includes(q)) ||
     (m.description && m.description.toLowerCase().includes(q))
   );
 
-  display(filtered);
+  if(results.length===0){
+    gallery.innerHTML="<h2>No memories found 😔</h2>";
+    return;
+  }
+
+  display(results);
+
+  // Scroll to results
+  gallery.scrollIntoView({behavior:"smooth"});
 }
 
 async function upload() {

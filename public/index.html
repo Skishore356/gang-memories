@@ -27,11 +27,16 @@
   <div class="member-grid" id="memberGrid"></div>
 </section>
 
-<header>
+<header class="hero">
   <h1>Gang of 12 ❤️ Memories</h1>
 
-  <input type="text" placeholder="Search by name, event, keyword..."
-         oninput="searchMemories(this.value)">
+  <div class="searchBox">
+    <input id="searchInput"
+      type="text"
+      placeholder="Search memories, events, people..."
+      oninput="searchMemories(this.value)">
+    <span class="searchIcon">🔍</span>
+  </div>
 </header>
 
 <section class="uploadBox">

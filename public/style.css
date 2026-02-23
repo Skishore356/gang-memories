@@ -1,100 +1,91 @@
-body {
+body{
   margin:0;
-  font-family: 'Segoe UI', sans-serif;
-  background: #0f172a;
-  color: white;
+  font-family:'Inter',sans-serif;
+  background:linear-gradient(135deg,#0f172a,#020617);
+  color:white;
 }
 
-header {
-  background: linear-gradient(90deg,#1e293b,#020617);
-  padding:20px;
+/* HERO */
+.hero{
+  text-align:center;
+  padding:40px 20px;
+  background:linear-gradient(90deg,#1e3a8a,#0ea5e9);
+}
+
+/* SEARCH */
+.searchBox{
+  width:60%;
+  margin:20px auto;
+  background:white;
+  border-radius:40px;
+  display:flex;
+  align-items:center;
+  padding:10px 20px;
+}
+
+.searchBox input{
+  border:none;
+  outline:none;
+  flex:1;
+  font-size:18px;
+}
+
+.searchIcon{
   font-size:20px;
 }
 
-.topnav {
-  background:#020617;
-  padding:10px;
-}
-
-.dropdown { position:relative; display:inline-block; }
-
-.dropbtn {
-  background:#38bdf8;
-  border:none;
-  padding:10px 18px;
-  font-size:16px;
-  cursor:pointer;
-  border-radius:6px;
-}
-
-.dropdown-content {
-  display:none;
-  position:absolute;
-  background:#1e293b;
-  min-width:200px;
-  border-radius:8px;
-  overflow:hidden;
-  z-index:1;
-}
-
-.dropdown-content div {
-  padding:10px;
-  cursor:pointer;
-}
-
-.dropdown-content div:hover { background:#334155; }
-
-.dropdown:hover .dropdown-content { display:block; }
-
-.members {
-  padding:30px;
-}
-
-.member-grid {
+/* MEMBERS */
+.member-grid{
   display:flex;
   flex-wrap:wrap;
   gap:25px;
   justify-content:center;
+  padding:20px;
 }
 
-.member {
+.member{
   background:#1e293b;
   padding:15px;
-  border-radius:12px;
-  width:160px;
-  text-align:center;
+  width:170px;
+  border-radius:14px;
+  cursor:pointer;
   transition:0.3s;
 }
 
-.member:hover {
-  transform:scale(1.05);
+.member:hover{
+  transform:translateY(-5px);
   background:#334155;
 }
 
-.member img {
+.member img{
   width:100%;
   border-radius:10px;
 }
 
-.gallery {
-  padding:20px;
+/* GALLERY */
+.gallery{
   display:flex;
   flex-wrap:wrap;
-  gap:20px;
   justify-content:center;
+  gap:25px;
+  padding:30px;
 }
 
-.card {
-  width:260px;
+.card{
+  width:280px;
   background:#1e293b;
-  border-radius:12px;
-  padding:10px;
+  border-radius:14px;
+  padding:12px;
 }
 
-.comments input {
-  width:90%;
-  margin:4px;
+.card img,video{
+  width:100%;
+  border-radius:10px;
 }
-.comments button {
-  margin-bottom:8px;
+
+.eventTag{
+  background:#38bdf8;
+  padding:4px 10px;
+  border-radius:20px;
+  font-size:12px;
 }
