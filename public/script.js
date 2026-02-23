@@ -1,3 +1,4 @@
+// ---------------- MEMBERS ----------------
 const members = [
  {name:"Kishore", nick:"Heisenberg", img:"members/kishore.jpg"},
  {name:"Jayavenket", nick:"...", img:"members/jayavenket.jpg"},
@@ -15,6 +16,8 @@ const members = [
 
 let memories = [];
 
+
+// ---------------- LOGIN ----------------
 async function login() {
   const password = document.getElementById("password").value;
 
@@ -27,27 +30,19 @@ async function login() {
   if (res.status === 200) {
     document.getElementById("loginBox").style.display = "none";
     document.getElementById("main").style.display = "block";
+
+    loadMembers();
     loadMemories();
   } else {
     alert("Wrong Password!");
   }
 }
 
-function loadMembers(){
-  const grid=document.getElementById("memberGrid");
-  members.forEach(m=>{
-    grid.innerHTML += `
-      <div class="member">
-        <img src="${m.img}">
-        <h4>${m.name}</h4>
-        <p>${m.nick}</p>
-      </div>`;
-  });
-}
 
+// ---------------- LOAD MEMBERS ----------------
 function loadMembers(){
-  const grid=document.getElementById("memberGrid");
-  grid.innerHTML="";
+  const grid = document.getElementById("memberGrid");
+  grid.innerHTML = "";
 
   members.forEach(m=>{
     grid.innerHTML += `
@@ -58,20 +53,38 @@ function loadMembers(){
       </div>`;
   });
 }
+
+
+// ---------------- LOAD MEMORIES ----------------
+async function loadMemories(){
+  const res = await fetch("/memories");
+  memories = await res.json();
+
+  buildEventMenu();
+  display(memories);
+}
+
+
+// ---------------- DISPLAY GALLERY ----------------
 function display(data){
-  const gallery=document.getElementById("gallery");
-  gallery.innerHTML="";
+  const gallery = document.getElementById("gallery");
+  gallery.innerHTML = "";
+
+  if(data.length === 0){
+    gallery.innerHTML = "<h2>No memories found 😔</h2>";
+    return;
+  }
 
   data.slice().reverse().forEach(m=>{
     const media = m.file.endsWith(".mp4")
       ? `<video controls src="${m.file}"></video>`
       : `<img src="${m.file}">`;
 
-    const comments=(m.comments||[]).map(c =>
+    const comments = (m.comments || []).map(c =>
       `<p><b>${c.name}</b>: ${c.text}</p>`
     ).join("");
 
-    gallery.innerHTML+=`
+    gallery.innerHTML += `
       <div class="card">
         ${media}
 
@@ -83,7 +96,7 @@ function display(data){
         <p class="desc">${m.description}</p>
 
         <button onclick="likeMemory(${m.id})">
-          ❤️ ${m.likes||0}
+          ❤️ ${m.likes || 0}
         </button>
 
         <div class="comments">
@@ -97,14 +110,23 @@ function display(data){
   });
 }
 
+
+// ---------------- LIKE ----------------
 async function likeMemory(id){
   await fetch(`/like/${id}`, { method:"POST" });
   loadMemories();
 }
 
+
+// ---------------- COMMENT ----------------
 async function addComment(id){
   const name = document.getElementById(`name-${id}`).value;
   const text = document.getElementById(`comment-${id}`).value;
+
+  if(!name || !text){
+    alert("Enter name and comment!");
+    return;
+  }
 
   await fetch(`/comment/${id}`, {
     method:"POST",
@@ -115,37 +137,37 @@ async function addComment(id){
   loadMemories();
 }
 
-function searchMemories(query){
-  const gallery=document.getElementById("gallery");
 
+// ---------------- SEARCH ----------------
+function searchMemories(query){
   if(!query){
     display(memories);
     return;
   }
 
-  const q=query.toLowerCase();
+  const q = query.toLowerCase();
 
-  const results=memories.filter(m =>
+  const results = memories.filter(m =>
     (m.author && m.author.toLowerCase().includes(q)) ||
     (m.event && m.event.toLowerCase().includes(q)) ||
     (m.description && m.description.toLowerCase().includes(q))
   );
 
-  if(results.length===0){
-    gallery.innerHTML="<h2>No memories found 😔</h2>";
+  display(results);
+}
+
+
+// ---------------- UPLOAD ----------------
+async function upload() {
+  const fileInput = document.getElementById("file");
+
+  if(!fileInput.files.length){
+    alert("Please choose a file!");
     return;
   }
 
-  display(results);
-
-  // Scroll to results
-  gallery.scrollIntoView({behavior:"smooth"});
-}
-
-async function upload() {
   const formData = new FormData();
-
-  formData.append("file", document.getElementById("file").files[0]);
+  formData.append("file", fileInput.files[0]);
   formData.append("author", document.getElementById("author").value);
   formData.append("event", document.getElementById("event").value);
   formData.append("description", document.getElementById("description").value);
@@ -156,16 +178,19 @@ async function upload() {
   loadMemories();
 }
 
+
+// ---------------- EVENT MENU ----------------
 function buildEventMenu(){
-  const events=[...new Set(memories.map(m=>m.event))];
-  const menu=document.getElementById("eventMenu");
-  menu.innerHTML='<div onclick="display(memories)">All</div>';
+  const events = [...new Set(memories.map(m=>m.event))];
+  const menu = document.getElementById("eventMenu");
+
+  menu.innerHTML = `<div onclick="display(memories)">All</div>`;
 
   events.forEach(e=>{
-    menu.innerHTML+=`<div onclick="filterEvent('${e}')">${e}</div>`;
+    menu.innerHTML += `<div onclick="filterEvent('${e}')">${e}</div>`;
   });
 }
 
 function filterEvent(event){
-  display(memories.filter(m=>m.event===event));
+  display(memories.filter(m=>m.event === event));
 }

@@ -1,31 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Gang Memories</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-
-<div id="loginBox">
-  <h2>🔐 Enter Gang Password</h2>
-  <input type="password" id="password" placeholder="Enter Password">
-  <button onclick="login()">Enter</button>
-</div>
-
 <div id="main" style="display:none;">
-
-<nav class="topnav">
-  <div class="dropdown">
-    <button class="dropbtn">Events ▾</button>
-    <div id="eventMenu" class="dropdown-content"></div>
-  </div>
-</nav>
-
-<section class="members">
-  <h2>Our Gang ❤️</h2>
-  <div class="member-grid" id="memberGrid"></div>
-</section>
 
 <header class="hero">
   <h1>Gang of 12 ❤️ Memories</h1>
@@ -38,6 +11,18 @@
     <span class="searchIcon">🔍</span>
   </div>
 </header>
+
+<section class="members">
+  <h2>Our Gang ❤️</h2>
+  <div class="member-grid" id="memberGrid"></div>
+</section>
+
+<nav class="topnav">
+  <div class="dropdown">
+    <button class="dropbtn">Browse Events ▾</button>
+    <div id="eventMenu" class="dropdown-content"></div>
+  </div>
+</nav>
 
 <section class="uploadBox">
   <h3>Upload New Memory</h3>
@@ -53,8 +38,3 @@
 <section id="gallery" class="gallery"></section>
 
 </div>
-
-<script src="script.js"></script>
-
-</body>
-</html>
