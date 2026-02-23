@@ -1,3 +1,18 @@
+const members = [
+ {name:"Kishore", nick:"Boss", img:"members/kishore.jpg"},
+ {name:"Jayavenket", nick:"...", img:"members/jayavenket.jpg"},
+ {name:"Logeshwaran", nick:"Vedi", img:"members/logesh.jpg"},
+ {name:"Sanjay", nick:"Apur", img:"members/sanjay.jpg"},
+ {name:"Sanjaikumar", nick:"Kumar", img:"members/sanjaikumar.jpg"},
+ {name:"Vishnu", nick:"15 Parottas", img:"members/vishnu.jpg"},
+ {name:"Sivabharathi", nick:"Baladhi", img:"members/sivabharathi.jpg"},
+ {name:"Rohith R", nick:"Kuttipaiyan", img:"members/rohithr.jpg"},
+ {name:"Rohith V", nick:"BRO!", img:"members/rohithv.jpg"},
+ {name:"Mohith", nick:"...", img:"members/mohith.jpg"},
+ {name:"Muthu", nick:"Cutie", img:"members/muthu.jpg"},
+ {name:"Sivaprasath", nick:"Chottu", img:"members/sivaprasath.jpg"}
+];
+
 let memories = [];
 
 async function login() {
@@ -18,10 +33,25 @@ async function login() {
   }
 }
 
+function loadMembers(){
+  const grid=document.getElementById("memberGrid");
+  members.forEach(m=>{
+    grid.innerHTML += `
+      <div class="member">
+        <img src="${m.img}">
+        <h4>${m.name}</h4>
+        <p>${m.nick}</p>
+      </div>`;
+  });
+}
+
 async function loadMemories() {
   const res = await fetch("/memories");
   memories = await res.json();
+
   display(memories);
+  loadMembers();
+  buildEventMenu();
 }
 
 function display(data) {
@@ -71,4 +101,18 @@ async function upload() {
 
   alert("Memory Uploaded ❤️");
   loadMemories();
+}
+
+function buildEventMenu(){
+  const events=[...new Set(memories.map(m=>m.event))];
+  const menu=document.getElementById("eventMenu");
+  menu.innerHTML='<div onclick="display(memories)">All</div>';
+
+  events.forEach(e=>{
+    menu.innerHTML+=`<div onclick="filterEvent('${e}')">${e}</div>`;
+  });
+}
+
+function filterEvent(event){
+  display(memories.filter(m=>m.event===event));
 }
