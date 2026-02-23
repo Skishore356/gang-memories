@@ -1,5 +1,5 @@
 const members = [
- {name:"Kishore", nick:"Boss", img:"members/kishore.jpg"},
+ {name:"Kishore", nick:"Heisenberg", img:"members/kishore.jpg"},
  {name:"Jayavenket", nick:"...", img:"members/jayavenket.jpg"},
  {name:"Logeshwaran", nick:"Vedi", img:"members/logesh.jpg"},
  {name:"Sanjay", nick:"Apur", img:"members/sanjay.jpg"},
